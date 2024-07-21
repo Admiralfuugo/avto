@@ -2,7 +2,7 @@ from django.db import models
 
 class Device(models.Model):
     name = models.CharField(max_length=100)
-    imei = models.CharField(max_length=20, primary_key=True)
+    imei = models.CharField(max_length=20)
     location = models.CharField(max_length=50)
     
     def __str__(self) -> str:
