@@ -25,7 +25,7 @@ def putHistory(request):
         history.temperature = temp
         history.save()
         return HttpResponse('Message success!')
-    return HttpResponse('Message incompletely!')
+    return HttpResponse('Only method GET')
 
 def getHistory(request, pk):
     device = Device.objects.get(pk=pk)
