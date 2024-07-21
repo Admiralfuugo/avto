@@ -1,11 +1,28 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from .models import Device, History
-
+from django.http import JsonResponse
 
 def getDevices(request):
     devices = Device.objects.all()
     return render(request, 'show-device.html', {'data': devices}) 
+
+
+def getChartData(request, pk):
+    device = Device.objects.get(pk=pk)
+    hist = History.objects.filter(device=device)
+    labels = []
+    height = []
+    weight = []
+    for h in hist:
+        labels.append(h.datetime)
+        height.append(h.height)
+        weight.append(h.weight)
+    return JsonResponse(data={
+        'labels': labels,
+        'height': height,
+        'weight': weight,
+    })
 
 def putHistory(request):
     if request.method == "GET":
@@ -30,4 +47,4 @@ def putHistory(request):
 def getHistory(request, pk):
     device = Device.objects.get(pk=pk)
     hist = History.objects.filter(device=device)
-    return render(request, 'show-data.html', {'data': hist})
+    return render(request, 'show-data.html', {'device': device.id, 'data': hist})
