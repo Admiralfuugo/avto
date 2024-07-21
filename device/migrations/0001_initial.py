@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('height', models.CharField(max_length=10)),
                 ('weight', models.CharField(max_length=30)),
                 ('temperature', models.CharField(max_length=10)),
-                ('device', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='device', to='device.device')),
+                ('device', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='device.device')),
             ],
         ),
     ]

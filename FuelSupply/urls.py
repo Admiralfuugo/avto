@@ -34,6 +34,8 @@ urlpatterns = [
     path("iftofk/", admin.site.urls),
     path("", include("authentication.urls")),
     path("", include("main.urls")),
+    path("info/", include("device.urls")),
+    
 ]
 
 
