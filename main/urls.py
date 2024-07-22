@@ -1,5 +1,9 @@
 from django.urls import path, include
 
+#ectra
+from django.urls import path, include
+from .views import putHistory, getHistory, getDevices, getChartData
+
 
 from .views import (
     dashboard,
@@ -31,6 +35,9 @@ from .views import (
     Nsorovnoma,
     Nxisobot,
     Ved8,
+    showdate,
+    Ved9,
+    Ved10
     
 
 )
@@ -67,7 +74,14 @@ urlpatterns = [
     path("Nsorovnoma", Nsorovnoma, name="Nsorovnoma"),
     path("Nxisobot", Nxisobot, name="Nxisobot"),
     path("Ved8", Ved8, name="Ved8"),
+    path("Ved9", Ved9, name="Ved9"),
+    path("Ved10", Ved10, name="Ved10"),
+    path("showdate", showdate, name="showdate"),
 
-
+#extra_copy_divice_url
+    path('put/', putHistory, name='put-history'),
+    path('get/<pk>', getHistory, name='show-history'),
+    path('get/', getDevices, name='show-device'),
+    path('chart/<pk>', getChartData, name='data-chart'),
 
 ]

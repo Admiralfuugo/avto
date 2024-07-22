@@ -9,6 +9,8 @@ from main.models import (
     FuelType,
     Refuel,
     Add_fuels,
+    Device,
+    History
 
     
     
@@ -25,6 +27,33 @@ admin.site.register(Application)
 admin.site.register(Inspection)
 admin.site.register(Refuel)
 # admin.site.register(Add_fuels)
+
+#extra
+from django.contrib import admin
+from .models import *
+
+# admin.site.register(Device)
+# admin.site.register(History)
+
+@admin.register(History)
+class History(admin.ModelAdmin):
+    list_display = (
+        "device",
+        "height",
+        "weight",
+        'temperature',
+        'datetime',
+
+    )
+
+@admin.register(Device)
+class Device(admin.ModelAdmin):
+    list_display = (
+        "imei",
+        "name",
+        "location",
+    )
+
 
 
 

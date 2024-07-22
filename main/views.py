@@ -8,8 +8,19 @@ from django.utils import timezone
 from .forms import ApplicationForm
 from .models import Application, Vehicles, Inspection, Refuel, FuelType, Add_fuels
 from authentication.models import CustomUser
-
 from django.shortcuts import get_object_or_404
+from datetime import datetime
+
+
+#extra
+from django.shortcuts import render
+from django.shortcuts import HttpResponse
+from .models import Device, History
+from django.http import JsonResponse
+
+
+
+
 
 
 
@@ -334,6 +345,25 @@ def Ved8(request):
 
     return render(request, "for_print/8vedimis.html", context=context)
 
+@login_required
+def Ved9(request):
+    context = {}
+
+    return render(request, "for_print/Ved9.html", context=context)
+
+@login_required
+def Ved10(request):
+    context = {}
+
+    return render(request, "for_print/Ved10.html", context=context)
+
+@login_required
+def showdate(request):
+
+    context = {'current_date': datetime.now()}
+
+    return render(request, "for_print/showdate.html", context)
+
 
 
 #for_page
@@ -429,6 +459,61 @@ def add_fuel(request):
 
 
 
+#extra_copy_divice_view
+def getDevices(request):
+    devices = Device.objects.all()
+    return render(request, 'show-device.html', {'data': devices})
+
+
+def getChartData(request, pk):
+    device = Device.objects.get(pk=pk)
+    hist = History.objects.filter(device=device)
+    labels = []
+    height = []
+    weight = []
+    for h in hist:
+        labels.append(h.datetime)
+        height.append(h.height)
+        weight.append(h.weight)
+    return JsonResponse(data={
+        'labels': labels,
+        'height': height,
+        'weight': weight,
+    })
+
+def putHistory(request):
+    if request.method == "GET":
+        imei = request.GET['imei']
+        name = request.GET['name']
+        location = request.GET['location']
+        height = request.GET['height']
+        weight = request.GET['weight']
+        temp = request.GET['temperature']
+        device = Device.objects.filter(imei=imei).first()
+        if device is None:
+            device = Device.objects.create(imei=imei, name=name, location=location)
+            device.save()
+        history = History.objects.create(device=device)
+        history.height = height
+        history.weight = weight
+        history.temperature = temp
+        history.save()
+        return HttpResponse('Message success!')
+    return HttpResponse('Only method GET')
+
+def getHistory(request, pk):
+    device = Device.objects.get(pk=pk)
+    hist = History.objects.filter(device=device)
+    return render(request, 'show-data.html', {'device': device.id, 'data': hist})
+
+
+
+
+
+
+
+
+
 
 
 
@@ -448,6 +533,10 @@ def custom_404(request, exception):
 
 def server_error_view(request):
     return render(request, '500.html', status=500)
+
+
+
+
 
 
 
